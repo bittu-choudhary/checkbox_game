@@ -10,15 +10,12 @@
       var c=document.getElementById("myCanvas");
           c.addEventListener("click",clickHandler,false);
       var ctx=c.getContext("2d");
-      var rectW = 80, rectH = 80,rectXX = 250,rectYY = 90;
+      var rectW = 30, rectH = 30;
 
       for(i=0;i<8;i++){
         for(j=0;j<8;j++){
           var rectX = 10 + j * rectW, rectY = 10 + i * rectH ;
-          if (rectX == rectXX && rectY == rectYY){
-            ctx.fillStyle="green"
-          }
-          else if (((i+j)%2)!=0) {
+          if (((i+j)%2)!=0) {
             ctx.fillStyle="white" ;
           }
           else {
@@ -27,31 +24,49 @@
           ctx.fillRect(rectX ,rectY,rectW,rectH)
         }
       }
-      var timeNow = new Date() ;
-      timeNow.setSeconds(timeNow.getSeconds() + 2) ;
 
-       window.setTimeout(changeColor, 2000);
+      var puzzleRectXX = [],puzzleRectYY = [];
+
+      for(k=0;k<5;k++){
+        puzzleRectXX[k] = Math.floor(Math.random()*8)*30 + 10;
+        puzzleRectYY[k] = Math.floor(Math.random()*8)*30 + 10;
+        ctx.fillStyle="green";
+        ctx.fillRect(puzzleRectXX[k],puzzleRectYY[k],rectW,rectH);
+      }
+
+      var timeNow = new Date() ;
+      timeNow.setSeconds(timeNow.getSeconds() + 1) ;
+       window.setTimeout(changeColor, 1000);
 
       function changeColor(){
         var newTime = new Date();
-        if (true){
+        if (timeNow.getSeconds() == newTime.getSeconds()){
           ctx.fillStyle="black";
-          ctx.fillRect(rectXX,rectYY,rectW,rectH);
+          for(k=0;k<5;k++){
+            ctx.fillRect(puzzleRectXX[k],puzzleRectYY[k],rectW,rectH);
+          }
         }
-        // alert(timeNow + " hello " + newTime);
       }
+
       function clickHandler(e){
-        console.log(e);
-        var x = e.offsetX;
-        var y = e.offsetY;
-        if (x > rectXX && x < (rectXX + rectW) && y > rectYY && y < (rectYY + rectH)) {
-          ctx.fillStyle = "green";
-        }else{
-          ctx.fillStyle="Red";
-          z = true
+        var clickX = e.offsetX;
+        var clickY = e.offsetY;
+        for(k=0;k<5;k++){
+          if (clickX > puzzleRectXX[k] && clickX < (puzzleRectXX[k] + rectW) && clickY > puzzleRectYY[k] && clickY < (puzzleRectYY[k] + rectH)) {
+            ctx.fillStyle = "green";
+            ctx.fillRect(puzzleRectXX[k],puzzleRectYY[k],rectW,rectH);
+            break;
+          }else {
+            if (k==4){
+              ctx.fillStyle="Red";
+              for(k=0;k<5;k++){
+                ctx.fillRect(puzzleRectXX[k],puzzleRectYY[k],rectW,rectH);
+              }
+            }
+          }
         }
-        ctx.fillRect(rectXX,rectYY,rectW,rectH);
       }
+
     </script>
   </body>
 </html>
