@@ -15,7 +15,10 @@
       for(i=0;i<8;i++){
         for(j=0;j<8;j++){
           var rectX = 10 + j * rectW, rectY = 10 + i * rectH ;
-          if (((i+j)%2)!=0) {
+          if (rectX == rectXX && rectY == rectYY){
+            ctx.fillStyle="green"
+          }
+          else if (((i+j)%2)!=0) {
             ctx.fillStyle="white" ;
           }
           else {
@@ -24,20 +27,19 @@
           ctx.fillRect(rectX ,rectY,rectW,rectH)
         }
       }
-      // var timeNow = new Date() ;
-      // timeNow.getSeconds() + 10 ;
-      //
-      // setTimeout(function() {
-      //   changeColor();
-      // }, 10000);
-      //
-      // function changeColor(){
-      //   if (timeNow == (new Date())){
-      //     ctx.fillStyle="black";
-      //     ctx.fillRect(rectXX,rectYY,rectW,rectH);
-      //     alert("hello");
-      //   }
-      // }
+      var timeNow = new Date() ;
+      timeNow.setSeconds(timeNow.getSeconds() + 2) ;
+
+       window.setTimeout(changeColor, 2000);
+
+      function changeColor(){
+        var newTime = new Date();
+        if (true){
+          ctx.fillStyle="black";
+          ctx.fillRect(rectXX,rectYY,rectW,rectH);
+        }
+        // alert(timeNow + " hello " + newTime);
+      }
       function clickHandler(e){
         console.log(e);
         var x = e.offsetX;
