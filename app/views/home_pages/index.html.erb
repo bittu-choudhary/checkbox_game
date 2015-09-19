@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Chess Board</title>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="660" height="660" style="border:2px solid #d3d3d3;">
+    Your browser does not support the HTML5 canvas tag.</canvas>
+    <script>
+      var c=document.getElementById("myCanvas");
+          c.addEventListener("click",clickHandler,false);
+      var ctx=c.getContext("2d");
+      var rectW = 80, rectH = 80,rectXX = 250,rectYY = 90;
+
+      for(i=0;i<8;i++){
+        for(j=0;j<8;j++){
+          var rectX = 10 + j * rectW, rectY = 10 + i * rectH ;
+          if (((i+j)%2)!=0) {
+            ctx.fillStyle="white" ;
+          }
+          else {
+            ctx.fillStyle="black" ;
+          }
+          ctx.fillRect(rectX ,rectY,rectW,rectH)
+        }
+      }
+      // var timeNow = new Date() ;
+      // timeNow.getSeconds() + 10 ;
+      //
+      // setTimeout(function() {
+      //   changeColor();
+      // }, 10000);
+      //
+      // function changeColor(){
+      //   if (timeNow == (new Date())){
+      //     ctx.fillStyle="black";
+      //     ctx.fillRect(rectXX,rectYY,rectW,rectH);
+      //     alert("hello");
+      //   }
+      // }
+      function clickHandler(e){
+        console.log(e);
+        var x = e.offsetX;
+        var y = e.offsetY;
+        if (x > rectXX && x < (rectXX + rectW) && y > rectYY && y < (rectYY + rectH)) {
+          ctx.fillStyle = "green";
+        }else{
+          ctx.fillStyle="Red";
+          z = true
+        }
+        ctx.fillRect(rectXX,rectYY,rectW,rectH);
+      }
+    </script>
+  </body>
+</html>
