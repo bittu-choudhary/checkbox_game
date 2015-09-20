@@ -4,7 +4,7 @@
     <title> Chess Board</title>
   </head>
   <body>
-    <canvas id="myCanvas" width="660" height="660" style="border:2px solid #d3d3d3;">
+    <canvas id="myCanvas" width="260" height="260" style="border:2px solid #d3d3d3;">
     Your browser does not support the HTML5 canvas tag.</canvas>
     <script>
       var c=document.getElementById("myCanvas");
@@ -12,24 +12,31 @@
       var ctx=c.getContext("2d");
       var rectW = 30,
           rectH = 30,
-          puzzleLimit = 5,
+          puzzleLimit = 3,
           faddingTime = 1,
           waitingTime = 1000,
           border = 10,
           gridSize = 8,
           puzzleRectXX = [],
-          puzzleRectYY = [];
+          puzzleRectYY = [],
+          gridIndex = 0,
+          rectX = [],
+          rectY = [],
+          totalChance = 3,
+          totalSquare = 64;
 
       for(i=0;i<gridSize;i++){
         for(j=0;j<gridSize;j++){
-          var rectX = border + j * rectW, rectY = border + i * rectH ;
+          rectX[gridIndex] = border + j * rectW;
+          rectY[gridIndex] = border + i * rectH ;
           if (((i+j)%2)!=0) {
             ctx.fillStyle="white" ;
           }
           else {
             ctx.fillStyle="black" ;
           }
-          ctx.fillRect(rectX ,rectY,rectW,rectH)
+          ctx.fillRect(rectX[gridIndex] ,rectY[gridIndex],rectW,rectH);
+          gridIndex++;
         }
       }
 
@@ -58,7 +65,7 @@
           }
         }
       }
-
+      var m = 0,n=0;
       function clickHandler(e){
         var clickX = e.offsetX,
             clickY = e.offsetY;
@@ -66,15 +73,30 @@
           if (clickX > puzzleRectXX[k] && clickX < (puzzleRectXX[k] + rectW) && clickY > puzzleRectYY[k] && clickY < (puzzleRectYY[k] + rectH)) {
             ctx.fillStyle = "green";
             ctx.fillRect(puzzleRectXX[k],puzzleRectYY[k],rectW,rectH);
+            n++;
             break;
-          }else {
-            if (k==(puzzleLimit - 1)){
+          }else if(k == (puzzleLimit - 1)) {
+            for (l=0;l<totalSquare;l++){
+              if (clickX > rectX[l] && clickX < (rectX[l] + rectW) && clickY > rectY[l] && clickY < (rectY[l] + rectH) && m < totalChance){
+                ctx.fillStyle="red";
+                ctx.fillRect(rectX[l],rectY[l],rectW,rectH);
+                m++;
+                break;
+              }
+            }
+            if(m == (totalChance)){
               ctx.fillStyle="Red";
               for(k=0;k<puzzleLimit;k++){
                 ctx.fillRect(puzzleRectXX[k],puzzleRectYY[k],rectW,rectH);
               }
+              if(!alert("YOU LOSE THIS GAME!!!!!!, Click OK to Restart")){window.location.reload();}
+              break;
             }
+            break;
           }
+        }
+        if (n == puzzleLimit){
+          if(!alert("Congrats buddy, you win, Click OK to continue your winning streak")){window.location.reload();}
         }
       }
 
