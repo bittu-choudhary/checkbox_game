@@ -10,20 +10,20 @@
       var c=document.getElementById("myCanvas");
           c.addEventListener("click",clickHandler,false);
       var ctx=c.getContext("2d");
-      var rectW = 30,
-          rectH = 30,
-          puzzleLimit = 3,
+      var border = 10,
           faddingTime = 1,
-          waitingTime = 1000,
-          border = 10,
           gridSize = 8,
+          gridIndex = 0,
+          puzzleLimit = 5,
           puzzleRectXX = [],
           puzzleRectYY = [],
-          gridIndex = 0,
+          rectW = 30,
+          rectH = 30,
           rectX = [],
           rectY = [],
           totalChance = 3,
-          totalSquare = 64;
+          totalSquare = 64,
+          waitingTime = 1000;
 
       for(i=0;i<gridSize;i++){
         for(j=0;j<gridSize;j++){
