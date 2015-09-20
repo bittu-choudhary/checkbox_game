@@ -17,6 +17,9 @@
       var ctx = c.getContext("2d");
       var t = document.getElementById('timerCanvas');
       var ctt = t.getContext('2d');
+      ctt.font = '30pt Calibri';
+      ctt.fillStyle = 'green';
+      ctt.fillText("Timer", 10, 40);
       var border = 0,
           countDown = 00,
           faddingTime = 1,
@@ -48,7 +51,7 @@
           gridIndex++;
         }
       }
-      alert("Well come to Mind game. Bet on your memorizing power.\nGame plan :\n1. Memorize Green square positions\n2. After 1 second they will camouflage in checkbox\n3. Try to find Green squares with clicks.\n4. find all and you win\n5. you have three spare clicks for wrong clicks\n\n Click \"OK\" when you are ready");
+      alert("Well come to Mind game. Bet on your memorizing power.\nGame plan :\n1. Memorize Green square positions\n2. After 1 second they will camouflage in checkbox\n3. Try to find Green squares with clicks.\n4. find all and you win\n5. you have three spare clicks for wrong clicks\n6. You must complete it in 4 seconds\n\n Click \"OK\" when you are ready");
       for(k=0;k<puzzleLimit;k++){
         puzzleRectXX[k] = Math.floor(Math.random()*8)*30 + border;
         puzzleRectYY[k] = Math.floor(Math.random()*8)*30 + border;
@@ -86,6 +89,10 @@
         ctt.fillText(":" + countDown, 40, 40);
         if(countDown == maxTimeLimit){
           if(confirm("AWWWWWW TIME UP!!!!! \nbetter luck next time buddy ,you lost this game! Click \"OK\" to Restart again ")){window.location.reload();}
+          ctt.fillStyle = "white";
+          ctt.fillRect(0,0,120,60);
+          ctt.fillStyle = 'green';
+          ctt.fillText(":" + 0, 40, 40);
         }
         countDown++;
       }
