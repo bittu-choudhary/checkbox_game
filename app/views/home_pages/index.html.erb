@@ -4,16 +4,25 @@
     <title> Chess Board</title>
   </head>
   <body>
-    <canvas id="myCanvas" width="260" height="260" style="border:2px solid #d3d3d3;">
+    <canvas id="myCanvas" width="240" height="240" style="border:2px solid #d3d3d3;">
+    Your browser does not support the HTML5 canvas tag.</canvas>
+    <p>
+      Timer
+    </p>
+    <canvas id="timerCanvas" width="120" height="60" style="border:2px solid #d3d3d3;">
     Your browser does not support the HTML5 canvas tag.</canvas>
     <script>
-      var c=document.getElementById("myCanvas");
+      var c = document.getElementById("myCanvas");
           c.addEventListener("click",clickHandler,false);
-      var ctx=c.getContext("2d");
-      var border = 10,
+      var ctx = c.getContext("2d");
+      var t = document.getElementById('timerCanvas');
+      var ctt = t.getContext('2d');
+      var border = 0,
+          countDown = 00,
           faddingTime = 1,
           gridSize = 8,
           gridIndex = 0,
+          maxTimeLimit = 4,
           puzzleLimit = 5,
           puzzleRectXX = [],
           puzzleRectYY = [],
@@ -23,8 +32,8 @@
           rectY = [],
           totalChance = 3,
           totalSquare = 64,
+          timerAbortTime = 6000,
           waitingTime = 1000;
-
       for(i=0;i<gridSize;i++){
         for(j=0;j<gridSize;j++){
           rectX[gridIndex] = border + j * rectW;
@@ -39,17 +48,20 @@
           gridIndex++;
         }
       }
-
+      alert("Well come to Mind game. Bet on your memorizing power.\nGame plan :\n1. Memorize Green square positions\n2. After 1 second they will camouflage in checkbox\n3. Try to find Green squares with clicks.\n4. find all and you win\n5. you have three spare clicks for wrong clicks\n\n Click \"OK\" when you are ready");
       for(k=0;k<puzzleLimit;k++){
-        puzzleRectXX[k] = Math.floor(Math.random()*8)*30 + 10;
-        puzzleRectYY[k] = Math.floor(Math.random()*8)*30 + 10;
+        puzzleRectXX[k] = Math.floor(Math.random()*8)*30 + border;
+        puzzleRectYY[k] = Math.floor(Math.random()*8)*30 + border;
         ctx.fillStyle="green";
         ctx.fillRect(puzzleRectXX[k],puzzleRectYY[k],rectW,rectH);
       }
 
-      var timeNow = new Date() ;
+      var timeNow = new Date();
       timeNow.setSeconds(timeNow.getSeconds() + faddingTime) ;
       window.setTimeout(changeColor, waitingTime);
+      var tid = setInterval(startTimer, waitingTime);
+      window.setTimeout(abortTimer, timerAbortTime);
+
 
       function changeColor(){
         var newTime = new Date();
@@ -65,6 +77,23 @@
           }
         }
       }
+      function startTimer(){
+        console.log("hello");
+        ctt.fillStyle = "white";
+        ctt.fillRect(0,0,120,60);
+        ctt.font = '30pt Calibri';
+        ctt.fillStyle = 'green';
+        ctt.fillText(":" + countDown, 40, 40);
+        if(countDown == maxTimeLimit){
+          if(confirm("AWWWWWW TIME UP!!!!! \nbetter luck next time buddy ,you lost this game! Click \"OK\" to Restart again ")){window.location.reload();}
+        }
+        countDown++;
+      }
+
+      function abortTimer(){
+        clearInterval(tid);
+      }
+
       var m = 0,n=0;
       function clickHandler(e){
         var clickX = e.offsetX,
@@ -73,6 +102,8 @@
           if (clickX > puzzleRectXX[k] && clickX < (puzzleRectXX[k] + rectW) && clickY > puzzleRectYY[k] && clickY < (puzzleRectYY[k] + rectH)) {
             ctx.fillStyle = "green";
             ctx.fillRect(puzzleRectXX[k],puzzleRectYY[k],rectW,rectH);
+            puzzleRectXX[k] = -1;
+            puzzleRectYY[k] = -1;
             n++;
             break;
           }else if(k == (puzzleLimit - 1)) {
@@ -89,14 +120,14 @@
               for(k=0;k<puzzleLimit;k++){
                 ctx.fillRect(puzzleRectXX[k],puzzleRectYY[k],rectW,rectH);
               }
-              if(!alert("YOU LOSE THIS GAME!!!!!!, Click OK to Restart")){window.location.reload();}
+              if(confirm("YOU LOSE THIS GAME!!!!!!, Click OK to Restart")){window.location.reload();}
               break;
             }
             break;
           }
         }
         if (n == puzzleLimit){
-          if(!alert("Congrats buddy, you win, Click OK to continue your winning streak")){window.location.reload();}
+          if(confirm("Congrats buddy, you win, Click OK to continue your winning streak")){window.location.reload();}
         }
       }
 
